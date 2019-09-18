@@ -1,9 +1,11 @@
 package com.kylin.upms.biz.web;
 
 
+import com.kylin.upms.biz.vo.ResEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>
@@ -17,4 +19,8 @@ import org.springframework.stereotype.Controller;
 @RequestMapping("/role")
 public class RoleController {
 
+    @RequestMapping(value = "/page",method = RequestMethod.GET)
+    public ResEntity rolePage(){
+        return ResEntity.ok();
+    }
 }

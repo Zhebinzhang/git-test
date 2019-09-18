@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
-
+import java.util.List;
 
 
 import com.baomidou.mybatisplus.annotations.Version;
@@ -56,6 +56,7 @@ public class Menu extends Model<Menu> {
 
     private Date createTime;
 
+    private  List<Role> roleList;
 
     @Override
     protected Serializable pkVal() {

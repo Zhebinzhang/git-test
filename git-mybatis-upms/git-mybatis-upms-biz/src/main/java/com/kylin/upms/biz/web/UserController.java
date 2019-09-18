@@ -34,7 +34,7 @@ public class UserController {
     IUserService iUserService;
 
     @ApiOperation("根据查询条件分页查询用户列表")
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET,value = "/page")
     public ResEntity get(UserDto userDto){
         Page<User> page = new Page<User>(userDto.getPageNum(),userDto.getPageSize());
         User user  = new User();
