@@ -8,5 +8,7 @@ public class TestBranch {
 
     public static void main(String[] args) {
         System.out.println("这是测试分支的功能");
+        System.out.println("这是测试分支的分支");
     }
+
 }
