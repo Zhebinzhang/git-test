@@ -19,6 +19,16 @@
             <id column="id1" property="id" />
             <result column="name1" property="name" />
         </collection>
+        <collection property="menuList" ofType="com.kylin.upms.biz.entity.Menu">
+            <id column="id1" property="id" />
+            <result column="name1" property="name" />
+            <result column="url1" property="url" />
+            <result column="path1" property="path" />
+            <result column="component1" property="component" />
+            <result column="name1" property="name" />
+            <result column="parentId1" property="parentId" />
+        </collection>
+
     </resultMap>
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
@@ -34,5 +44,37 @@
             menu m
         LEFT JOIN menu_role mr ON mr.mid = m.id
         LEFT JOIN role r ON mr.rid = r.id
+    </select>
+
+
+    <select id="getMenuBuUserID" resultMap="BaseResultMap" parameterType="java.lang.String">
+
+        SELECT
+	men1.*,
+	menu2.id as id1,
+	menu2.url as url1,
+	menu2.name as name1,
+	menu2.parentid as parentid1,
+	menu2.path as path1,
+	menu2.component as component1
+FROM
+	menu men1,
+	menu menu2
+WHERE
+	men1.id = menu2.parentId
+AND menu2.id IN (
+	SELECT
+		mr.mid
+	FROM
+		menu_role mr,
+		user_role ur,
+		user u
+	WHERE
+		mr.rid = ur.rid
+	AND ur.uid = u.id
+	AND u.username = #{username}
+)
+and men1.parentid =1
+and  men1.enabled =1
     </select>
 </mapper>

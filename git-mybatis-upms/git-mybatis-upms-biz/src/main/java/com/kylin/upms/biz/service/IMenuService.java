@@ -1,6 +1,5 @@
 package com.kylin.upms.biz.service;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.kylin.upms.biz.entity.Menu;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -17,5 +16,6 @@ import java.util.List;
 public interface IMenuService extends IService<Menu> {
 
     List<Menu> getMenuAll();
+    List<Menu> getMenuBuUserID(String username);
 
 }

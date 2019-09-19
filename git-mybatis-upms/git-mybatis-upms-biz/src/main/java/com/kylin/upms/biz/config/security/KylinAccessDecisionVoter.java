@@ -27,6 +27,10 @@ public class KylinAccessDecisionVoter implements AccessDecisionManager {
         Iterator<ConfigAttribute> iterator = collection.iterator();
         while (iterator.hasNext()){
             ConfigAttribute next = iterator.next();
+            if (next.getAttribute().equalsIgnoreCase("ROLE_LOGIN")){
+                logger.debug("放行的角色：{}", "ROLE_LOGIN");
+                return;
+            }
             if (next.getAttribute().equalsIgnoreCase("ROLE_NONE")){
                 throw  new AccessDeniedException("您没有配置url，请联系开发人员配置url");
             }
@@ -39,7 +43,6 @@ public class KylinAccessDecisionVoter implements AccessDecisionManager {
             }
         }
         throw new AccessDeniedException("权限不足，请联系管理员");
-
     }
 
     @Override

@@ -58,6 +58,9 @@ public class Menu extends Model<Menu> {
 
     private  List<Role> roleList;
 
+
+    private List<Menu> menuList;
+
     @Override
     protected Serializable pkVal() {
         return this.id;

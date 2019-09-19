@@ -62,6 +62,8 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>(){
+
+
             @Override
             public <O extends FilterSecurityInterceptor> O postProcess(O o) {
                 o.setSecurityMetadataSource(kylinFilterInvocationSecurityMetadataSource);

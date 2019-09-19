@@ -23,4 +23,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements IM
     public List<Menu> getMenuAll() {
         return this.baseMapper.getMenuAll();
     }
+
+    @Override
+    public List<Menu> getMenuBuUserID(String username) {
+        return this.baseMapper.getMenuBuUserID(username);
+    }
 }

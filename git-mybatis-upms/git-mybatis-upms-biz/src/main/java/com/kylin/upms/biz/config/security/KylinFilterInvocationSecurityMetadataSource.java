@@ -23,16 +23,17 @@ public class KylinFilterInvocationSecurityMetadataSource implements FilterInvoca
     @Autowired
     IMenuService iMenuService;
 
-
-    //这是uri匹配规则的类
+    private final static List<String> urls = Arrays.asList("/menu/getMenuByUserID");
     AntPathMatcher antPathMatcher = new AntPathMatcher();
-    //log日志包
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
        //获取请求的url
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
+        if (urls.contains(requestUrl)){
+            return SecurityConfig.createList("ROLE_LOGIN");
+        }
         logger.debug("请求的url为:{}",requestUrl);
         //获取 数据库中所有的url  和url 对应的角色
         List<Menu> menuAll = iMenuService.getMenuAll();
