@@ -14,7 +14,8 @@
         id, name, nameZh AS nameZh
     </sql>
     <select id="getRoleByUserName"  resultMap="BaseResultMap" parameterType="java.lang.String">
-        select DISTINCT(r.`name`),r.id from user as u,role as r,user_role as ur where ur.rid = r.id and ur.uid = u.id
+        select DISTINCT(r.`name`),r.id,r.nameZh from user as u,role as r,user_role as ur where ur.rid = r.id and ur.uid = u.id
         and u.username = #{username}
     </select>
+
 </mapper>

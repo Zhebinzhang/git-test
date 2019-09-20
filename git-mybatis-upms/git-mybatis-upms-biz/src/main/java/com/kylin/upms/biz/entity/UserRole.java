@@ -1,17 +1,14 @@
 package com.kylin.upms.biz.entity;
 
-import com.baomidou.mybatisplus.enums.IdType;
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
-import java.io.Serializable;
-
-
-
-import com.baomidou.mybatisplus.annotations.Version;
-
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -23,6 +20,8 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@TableName("user_role")
+@NoArgsConstructor
 public class UserRole extends Model<UserRole> {
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +32,11 @@ public class UserRole extends Model<UserRole> {
     private Integer uid;
 
     private Integer rid;
+
+    public UserRole(Integer uid, Integer rid) {
+        this.uid = uid;
+        this.rid = rid;
+    }
 
 
     @Override

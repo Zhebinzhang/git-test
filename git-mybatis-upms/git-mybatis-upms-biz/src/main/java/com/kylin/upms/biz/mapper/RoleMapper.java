@@ -17,4 +17,5 @@ public interface RoleMapper extends BaseMapper<Role> {
 
      List<Role> getRoleByUserName(String userName);
 
+     //List<Role> getRolesList();
 }
