@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,9 @@ public class KylinAccessDecisionVoter implements AccessDecisionManager {
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
             //collection :数据过滤器中传过来的 请求的url 对应的角色信息
         logger.debug("当前登录的角色信息为：{}", JSON.toJSONString(authentication.getAuthorities()));
+        if (authentication instanceof AnonymousAuthenticationToken){
+            throw new AccessDeniedException("尚未登录");
+        }
         Iterator<ConfigAttribute> iterator = collection.iterator();
         while (iterator.hasNext()){
             ConfigAttribute next = iterator.next();
