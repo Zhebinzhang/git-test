@@ -22,7 +22,8 @@ public class KylinAccessDecisionVoter implements AccessDecisionManager {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
+    public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection)
+            throws AccessDeniedException, InsufficientAuthenticationException {
             //collection :数据过滤器中传过来的 请求的url 对应的角色信息
         logger.debug("当前登录的角色信息为：{}", JSON.toJSONString(authentication.getAuthorities()));
         if (authentication instanceof AnonymousAuthenticationToken){

@@ -98,6 +98,7 @@ public class UserController {
         return ResEntity.error("删除失败");
     }
 
+    //获取所有角色的列表
     @RequestMapping(method = RequestMethod.GET,value = "/getRolesListByUsername")
     public ResEntity get(String username){
         List<Role> roleslist = iRoleService.getRoleByUserName(username);
@@ -125,10 +126,11 @@ public class UserController {
         List<UserRole> userRoles = iUserRoleService.selectList(wrapper);
         List<Integer> list=new ArrayList<>();
         userRoles.forEach((userRole)->list.add(userRole.getRid()));
-        logger.info("单个用户所有的权限"+list);
+        logger.info("单个用户所有的角色"+list);
         return  ResEntity.ok(list);
     }
 
+    //用户赋予角色和角色的修改
     @RequestMapping(method = RequestMethod.GET,value = "/changeUserRoles")
     public ResEntity add(Integer id,Integer rids[]){
 

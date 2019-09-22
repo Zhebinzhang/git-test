@@ -6,6 +6,7 @@ import com.kylin.upms.biz.service.IMenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
+@RefreshScope
 public class KylinFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     @Autowired
     IMenuService iMenuService;
