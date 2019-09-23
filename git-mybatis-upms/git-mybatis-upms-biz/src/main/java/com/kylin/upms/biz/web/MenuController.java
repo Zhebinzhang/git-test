@@ -44,20 +44,19 @@ public class MenuController {
        return ResEntity.ok(menus);
    }
 
-   //获取所有的权限列表
-//    @RequestMapping("/getMenusList")
-//    public ResEntity menusList()
-//    {
-//        EntityWrapper<Menu> wrapper = new EntityWrapper<>();
-//        List<Menu> menuList = iMenuService.selectList(wrapper);
-//        logger.info("/menu/getMenusList-->获取的列表为",menuList);
-//        return  ResEntity.ok(menuList);
-//    }
     @RequestMapping("/getMenusList")
     public ResEntity get(){
         logger.info(JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
         UserSecurity user = (UserSecurity)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Menu> menus = iMenuService.getMenuBuUserID(user.getUsername());
         return ResEntity.ok(menus);
+    }
+
+
+    //three
+    @RequestMapping(value = "/getAllM")
+    public ResEntity getAllM(){
+        List<Menu> menuAll = iMenuService.getAllMenu();
+        return ResEntity.ok(menuAll);
     }
 }

@@ -77,4 +77,17 @@ AND menu2.id IN (
 and men1.parentid =1
 and  men1.enabled =1
     </select>
+
+    <!--为了树-->
+    <select id="getAllMenu" resultMap="BaseResultMap">
+              SELECT menu1.*,menu2.id as id1,
+	menu2.url as url1,
+	menu2.name as name1,
+	menu2.parentid as parentid1,
+	menu2.path as path1,
+	menu2.component as component1 FROM menu as menu1,menu as menu2 WHERE menu1.id=menu2.parentId AND menu2.id IN
+(SELECT mr.mid FROM menu_role mr,user_role ur,role r
+  WHERE mr.rid=ur.rid and ur.rid= r.id )
+AND menu1.parentId=1 AND menu2.enabled=1
+    </select>
 </mapper>

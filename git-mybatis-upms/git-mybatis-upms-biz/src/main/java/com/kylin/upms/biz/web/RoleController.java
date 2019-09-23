@@ -12,7 +12,6 @@ import com.kylin.upms.biz.service.IMenuService;
 import com.kylin.upms.biz.service.IRoleService;
 import com.kylin.upms.biz.vo.ResEntity;
 import io.swagger.annotations.Api;
-import org.apache.commons.collections4.Get;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -90,12 +89,14 @@ public class RoleController {
 
     @RequestMapping(method = RequestMethod.DELETE)
     public ResEntity del(Integer id){
+
+        EntityWrapper<MenuRole> wrapper = new EntityWrapper<>();
+        wrapper.eq("rid",id);
+        iMenuRoleService.delete(wrapper);
         boolean b = iRoleService.deleteById(id);
         if (b){ return ResEntity.ok("删除成功"); }
         return ResEntity.error("删除失败");
     }
-
-
 
     @Autowired
     IMenuService iMenuService;

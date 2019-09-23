@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -26,6 +27,7 @@ public class KylinFilterInvocationSecurityMetadataSource implements FilterInvoca
     IMenuService iMenuService;
 
     private final static List<String> urls = Arrays.asList("/menu/getMenuByUserID");
+
     AntPathMatcher antPathMatcher = new AntPathMatcher();
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
