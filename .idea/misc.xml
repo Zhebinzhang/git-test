@@ -5,6 +5,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/kylin-upms/pom.xml" />
+        <option value="$PROJECT_DIR$/kylin-upms/kylin-upms-search/pom.xml" />
       </list>
     </option>
   </component>
