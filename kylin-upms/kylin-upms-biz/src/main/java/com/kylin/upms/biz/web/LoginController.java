@@ -13,8 +13,8 @@ public class LoginController {
 
 
     @CrossOrigin(origins = {"http://localhost:8080"})
+  @RequestMapping("/login_p")
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @RequestMapping("/login_p")
     public ResEntity loginP(){
         return ResEntity.error("尚未登录");
     }

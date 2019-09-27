@@ -10,6 +10,8 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>kylin-upms</module>
+        <module>kylin-gateway</module>
+        <module>kylin-aop</module>
     </modules>
 
     <parent>
@@ -100,17 +102,7 @@
             <version>6.0.8</version>
         </dependency>
 
-        <!-- elasticsearch启动器 (必须)-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-<!--        </dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-elasticsearch -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>-->
-<!--            <version>2.1.8.RELEASE</version>-->
-<!--        </dependency>-->
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -133,11 +125,6 @@
             <version>0.2.2.RELEASE</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.alibaba.nacos</groupId>-->
-<!--            <artifactId>nacos-client</artifactId>-->
-<!--            <version>1.1.0</version>-->
-<!--        </dependency>-->
 
     </dependencies>
     <build>
@@ -212,9 +199,9 @@
             </dependency>
 
             <dependency>
-                <groupId>com.alibaba.cloud</groupId>
+                <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-                <version>2.0.0.RELEASE</version>
+                <version>0.2.2.RELEASE</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

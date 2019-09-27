@@ -6,6 +6,7 @@ import com.kylin.upms.biz.service.IMenuService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -15,27 +16,29 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-@Component
+
 @RefreshScope
+@Component
 public class KylinFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
     @Autowired
     IMenuService iMenuService;
 
-    private final static List<String> urls = Arrays.asList("/menu/getMenuByUserID","/loding/uploadFile");
+    @Value(value = "${urls}")
+    private   String urls;
 
     AntPathMatcher antPathMatcher = new AntPathMatcher();
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+      logger.info("url:{}",urls);
        //获取请求的url
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
-        if (urls.contains(requestUrl)){
+        if (Arrays.asList(urls.split(",")).contains(requestUrl)){
             return SecurityConfig.createList("ROLE_LOGIN");
         }
         logger.debug("请求的url为:{}",requestUrl);

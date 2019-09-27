@@ -1,4 +1,4 @@
-package com.kylin.upms.biz.vo;
+package com.kylin.gateway.vo;
 
 import lombok.Data;
 
@@ -38,6 +38,10 @@ public class ResEntity implements Serializable {
         return new ResEntity(500, "操作失败", null);
 
     }
+
+    public static ResEntity error(Integer code, String msg) {
+        return new ResEntity(code, msg, null);
+    }
     public static ResEntity error(String msg, Object obj) {
         return new ResEntity(500, msg, obj);
     }
@@ -45,5 +49,4 @@ public class ResEntity implements Serializable {
     public static ResEntity error(Object object) {
         return new ResEntity(500, "操作失败", object);
     }
-
 }

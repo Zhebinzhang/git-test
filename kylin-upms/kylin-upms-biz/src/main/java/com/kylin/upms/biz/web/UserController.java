@@ -5,6 +5,9 @@ package com.kylin.upms.biz.web;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import com.kylin.aop.annotation.OperationLogDetail;
+import com.kylin.aop.enums.OperationType;
+import com.kylin.aop.enums.OperationUnit;
 import com.kylin.upms.biz.dto.UserDto;
 import com.kylin.upms.biz.entity.Role;
 import com.kylin.upms.biz.entity.User;
@@ -57,21 +60,20 @@ public class UserController {
         return new BCryptPasswordEncoder();
     }
 
+
     @ApiOperation("根据查询条件分页查询用户列表")
     @RequestMapping(method = RequestMethod.GET,value = "/page")
+    @OperationLogDetail(operationType = OperationType.UPDATE,operationUnit = OperationUnit.USER)
     public ResEntity get(UserDto userDto){
         Page<User> page = new Page<User>(userDto.getPageNum(),userDto.getPageSize());
-
         User user  = new User();
-
         BeanUtils.copyProperties(userDto,user);
-
         EntityWrapper entityWrapper = new EntityWrapper(user);
         entityWrapper.like("username",user.getUsername());
-
         Page page1 = iUserService.selectPage(page, entityWrapper);
         return ResEntity.ok(page1);
     }
+
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     public ResEntity add(UserDto userDto){
         User user  = new User();
@@ -83,13 +85,7 @@ public class UserController {
         return ResEntity.error("添加失败");
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResEntity update(UserDto userDto){
-
-        return null;
-
-    }
-
+    @OperationLogDetail(operationType = OperationType.UPDATE,operationUnit = OperationUnit.USER)
     @RequestMapping(method = RequestMethod.DELETE)
     public ResEntity del(Integer id){
         boolean b = iUserService.deleteById(id);
@@ -98,6 +94,7 @@ public class UserController {
     }
 
     //获取所有角色的列表
+    @OperationLogDetail(operationType = OperationType.UPDATE,operationUnit = OperationUnit.USER)
     @RequestMapping(method = RequestMethod.GET,value = "/getRolesListByUsername")
     public ResEntity get(String username){
         List<Role> roleslist = iRoleService.getRoleByUserName(username);
@@ -105,7 +102,7 @@ public class UserController {
         return ResEntity.ok(roleslist);
     }
 
-
+    @OperationLogDetail(operationType = OperationType.UPDATE,operationUnit = OperationUnit.USER)
     @RequestMapping(method = RequestMethod.GET,value = "/getByUsername")
     public boolean getUser(UserDto userDto){
         User user  = new User();

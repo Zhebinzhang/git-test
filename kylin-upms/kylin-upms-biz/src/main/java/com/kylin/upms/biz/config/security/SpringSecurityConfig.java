@@ -2,10 +2,12 @@ package com.kylin.upms.biz.config.security;
 
 
 import com.alibaba.fastjson.JSON;
+import com.kylin.upms.biz.exception.LoginNoneException;
 import com.kylin.upms.biz.vo.ResEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,10 +27,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -62,17 +64,17 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().withObjectPostProcessor(new FilterSecurityInterceptorObjectPostProcessor()).
-                anyRequest().authenticated().
-                and().formLogin().loginPage("/login_p").
-                loginProcessingUrl("/login").permitAll().
+        http.authorizeRequests().
+                withObjectPostProcessor(new FilterSecurityInterceptorObjectPostProcessor()).
+                anyRequest().authenticated().antMatchers("/login_p","/logout","/login").permitAll().and().
+                formLogin().loginPage("/login_p").loginProcessingUrl("/oauth/login").permitAll().
                 successHandler(new MyAuthenticationSuccessHandler()).
                 failureHandler(new MyAuthenticationFailureHandler()).permitAll().
-                and().logout().logoutUrl("/my/logout").addLogoutHandler(new MyLogoutHandler()).permitAll().
+                and().logout().logoutUrl("/my/logout").
+                addLogoutHandler(new MyLogoutHandler()).deleteCookies("JSESSIONID").permitAll().
                 and().csrf().disable().cors().configurationSource(CorsConfigurationSource()).
                 and().exceptionHandling().accessDeniedHandler(new MyAccessDeniedHandler());
     }
-
     @Bean
     public CorsConfigurationSource CorsConfigurationSource() {
         CorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -116,17 +118,6 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter{
         }
     }
 
-    private static class MyAccessDeniedHandler implements AccessDeniedHandler {
-        @Override
-        public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-            httpServletResponse.setContentType("application/json;charset=utf-8");
-            PrintWriter writer = httpServletResponse.getWriter();
-            writer.write(JSON.toJSONString(ResEntity.error("失败", e.getMessage())));
-            writer.flush();
-            writer.close();
-        }
-    }
-
     private static class MyLogoutHandler implements LogoutHandler {
 
         @Override
@@ -136,21 +127,25 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter{
             try {
                 writer = httpServletResponse.getWriter();
                 writer.write(JSON.toJSONString(ResEntity.ok("注销成功")));
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                writer.write(JSON.toJSONString(ResEntity.error("注销失败，服务器开小差了")));
-            }finally {
                 writer.flush();
                 writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
         }
     }
 
+        private static class MyAccessDeniedHandler implements AccessDeniedHandler {
+        @Override
+        public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
+            httpServletResponse.setContentType("application/json;charset=utf-8");
+            PrintWriter writer = httpServletResponse.getWriter();
+            writer.write(JSON.toJSONString(ResEntity.error("失败", e.getMessage())));
+            writer.flush();
+            writer.close();
+        }
+    }
     private class FilterSecurityInterceptorObjectPostProcessor implements ObjectPostProcessor<FilterSecurityInterceptor> {
-
-
         @Override
         public <O extends FilterSecurityInterceptor> O postProcess(O o) {
             o.setSecurityMetadataSource(kylinFilterInvocationSecurityMetadataSource);
@@ -159,5 +154,3 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter{
         }
     }
 }
-
-

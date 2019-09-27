@@ -1,6 +1,7 @@
 package com.kylin.upms.biz.config.security;
 
 import com.alibaba.fastjson.JSON;
+import com.kylin.upms.biz.exception.LoginNoneException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDecisionManager;
@@ -22,13 +23,12 @@ public class KylinAccessDecisionVoter implements AccessDecisionManager {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection)
-            throws AccessDeniedException, InsufficientAuthenticationException {
+    public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
             //collection :数据过滤器中传过来的 请求的url 对应的角色信息
-        logger.debug("当前登录的角色信息为：{}", JSON.toJSONString(authentication.getAuthorities()));
         if (authentication instanceof AnonymousAuthenticationToken){
-            throw new AccessDeniedException("尚未登录");
+            throw  new LoginNoneException("尚未登录");
         }
+        logger.debug("当前登录的角色信息为：{}", JSON.toJSONString(authentication.getAuthorities()));
         Iterator<ConfigAttribute> iterator = collection.iterator();
         while (iterator.hasNext()){
             ConfigAttribute next = iterator.next();
